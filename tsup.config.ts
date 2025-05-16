@@ -4,7 +4,7 @@ import fs from "fs"
 const filepaths: string[] = []
 
 fs.readdirSync(`${process.cwd()}/src`).forEach((file) => filepaths.push(`./src/${file}`))
-fs.readdirSync(`${process.cwd()}/public/assets/js`).forEach((file) => fs.unlinkSync(`./public/assets/js/${file}`))
+fs.readdirSync(`${process.cwd()}/docs/assets/js`).forEach((file) => fs.unlinkSync(`./docs/assets/js/${file}`))
 
 export default defineConfig({
     entry: filepaths,
@@ -14,14 +14,14 @@ export default defineConfig({
     format: ["iife"],
     injectStyle: true,
     clean: true,
-    outDir: "./public/assets/js",
+    outDir: "./docs/assets/js",
     onSuccess: async () => {
-        fs.readdirSync("./public/assets/js").forEach((file) => {
-            fs.renameSync(`./public/assets/js/${file}`, `./public/assets/js/${file.replace(".global.js", ".js")}`)
+        fs.readdirSync("./docs/assets/js").forEach((file) => {
+            fs.renameSync(`./docs/assets/js/${file}`, `./docs/assets/js/${file.replace(".global.js", ".js")}`)
 
-            const data = fs.readFileSync(`./public/assets/js/${file.replace(".global.js", ".js")}`, "utf8").replace(`//# sourceMappingURL=${file}.map`, `//# sourceMappingURL=${file.replace(".global.js", ".js")}.map`)
+            const data = fs.readFileSync(`./docs/assets/js/${file.replace(".global.js", ".js")}`, "utf8").replace(`//# sourceMappingURL=${file}.map`, `//# sourceMappingURL=${file.replace(".global.js", ".js")}.map`)
 
-            fs.writeFileSync(`./public/assets/js/${file.replace(".global.js", ".js")}`, data);
+            fs.writeFileSync(`./docs/assets/js/${file.replace(".global.js", ".js")}`, data);
         })
     },
     esbuildOptions(options) {
